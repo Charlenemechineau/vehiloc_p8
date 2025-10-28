@@ -31,9 +31,8 @@
             {% for voiture in voitures %}
                 <article>
                     <div class="mini-car-title">
-                        {# Lien vers la page de détail du véhicule (sera modifié plus tard) #}
-                        <a href="car.html">
-                            {# Affichage du nom et de la localisation de la voiture #}
+                        {# Lien vers la page de détail du véhicule #}
+                        <a href="{{ path('app_voiture_detail', {'id': voiture.id}) }}">
                             <h3>{{ voiture.nom }}</h3>
                             <p>ou similaire | {{ voiture.localisation }}</p>
                         </a>

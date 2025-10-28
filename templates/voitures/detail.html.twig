@@ -1,0 +1,92 @@
+{# 
+  On indique que ce fichier hérite du modèle global "base.html.twig".
+  Cela permet de réutiliser automatiquement le header et le footer du site.
+#}
+{% extends 'base.html.twig' %}
+
+{# 
+  On définit le titre de la page dans l’onglet du navigateur.
+  Ici, on affiche dynamiquement le nom de la voiture.
+#}
+{% block title %}{{ voiture.nom }} - Véhicloc{% endblock %}
+
+{# 
+  Le bloc "body" contient tout le contenu spécifique à cette page.
+  Tout ce qui est à l’intérieur s’affichera à la place du bloc body de base.html.twig.
+#}
+{% block body %}
+
+<section id="car">
+
+    {# Lien de retour vers la page d’accueil #}
+    <a href="{{ path('app_accueil') }}">← Retour</a>
+
+    {# 
+      On affiche le nom de la voiture venant de la base de données.
+      La variable "voiture" est transmise par le contrôleur.
+    #}
+    <h1>{{ voiture.nom }}</h1>
+
+    {# Description de la voiture, elle aussi récupérée depuis la base #}
+    <p class="description-car">
+        {{ voiture.description }}
+    </p>
+
+    {# Liste des avantages (contenu statique, identique pour toutes les voitures) #}
+    <div class="advantages">
+        <div class="single-advantage"><img src="/assets/icons/checked.png" alt="" /> Km illimités</div>
+        <div class="single-advantage"><img src="/assets/icons/checked.png" alt="" /> Taxe routière incluse</div>
+        <div class="single-advantage"><img src="/assets/icons/checked.png" alt="" /> Assistance dépannage 24/7</div>
+        <div class="single-advantage"><img src="/assets/icons/checked.png" alt="" /> Pas de frais caché</div>
+        <div class="single-advantage"><img src="/assets/icons/checked.png" alt="" /> Assurance au tiers</div>
+        <div class="single-advantage"><img src="/assets/icons/checked.png" alt="" /> Réservation sécurisée</div>
+    </div>
+
+    <hr>
+
+    {# Petit texte légal affiché pour toutes les voitures #}
+    <p class="legal-information">
+        Les conducteurs doivent avoir leur permis de conduire depuis au moins 5 ans.
+    </p>
+
+    {# 
+      Affichage du prix mensuel récupéré depuis la base.
+      On utilise "??" pour être sûr que Twig comprenne les deux styles de noms possibles :
+      - voiture.prixMensuel (camelCase)
+      - voiture.prix_mensuel (snake_case)
+    #}
+    <div class="total-rent">
+        <span>Total</span>
+        <span>{{ voiture.prixMensuel ?? voiture.prix_mensuel }} €/mois</span>
+    </div>
+
+    {# Bouton inactif : le texte du bouton est aussi dynamique selon le prix #}
+    <button class="btn-add">
+        Louer pour {{ voiture.prixMensuel ?? voiture.prix_mensuel }} €/mois
+    </button>
+</section>
+
+{# 
+  Deuxième section statique : les assurances et assistances.
+  Ces informations sont communes à toutes les voitures.
+#}
+<section id="insurances">
+    <h2>Les Assurances et Assistances</h2>
+
+    <div class="insurances-list">
+        <div class="single-insurance">
+            <img src="/assets/icons/basic.png" alt="Basique" />
+            <h3>Protection Basique</h3>
+            <p><img src="/assets/icons/checked.png" alt="" /> Assurance dommages pour les collisions, rayures, chocs et vol.</p>
+        </div>
+
+        <div class="single-insurance">
+            <img src="/assets/icons/complete.png" alt="Complète" />
+            <h3>Protection Complète</h3>
+            <p><img src="/assets/icons/checked.png" alt="" /> Assurance dommages pour les collisions, rayures, chocs et vol.</p>
+            <p><img src="/assets/icons/checked.png" alt="" /> Protection pneus et vitres.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
