@@ -1,7 +1,16 @@
+{# 
+  Page d'accueil du site Véhicloc
+  Cette page affiche la liste des voitures (récupérées depuis la base)
+  et la section "promesse Véhicloc"
+#}
+
+{# On utilise la structure du fichier base.html.twig (header + footer déjà inclus) #}
 {% extends 'base.html.twig' %}
 
+{# Titre de la page, affiché dans l’onglet du navigateur #}
 {% block title %}Accueil - Véhicloc{% endblock %}
 
+{# Contenu principal de la page #}
 {% block body %}
 
 <section id="fleet">
@@ -13,24 +22,29 @@
 
     <div class="fleet-list">
 
-        {# Si pas de voitures en base #}
+        {# Si aucune voiture n'est enregistrée dans la base, on affiche un message #}
         {% if voitures is empty %}
             <p>Aucune voiture disponible pour le moment. Ajoutez-en via phpMyAdmin.</p>
         {% else %}
 
-            {# Boucle sur les véhicules de la base de données #}
+            {# Sinon, on parcourt la liste des voitures récupérées par le contrôleur #}
             {% for voiture in voitures %}
                 <article>
                     <div class="mini-car-title">
+                        {# Lien vers la page de détail du véhicule (sera modifié plus tard) #}
                         <a href="car.html">
+                            {# Affichage du nom et de la localisation de la voiture #}
                             <h3>{{ voiture.nom }}</h3>
                             <p>ou similaire | {{ voiture.localisation }}</p>
                         </a>
+
+                        {# Icône de suppression (fonctionnalité non encore active) #}
                         <div>
                             <a href="#"><img src="/assets/icons/trash.png" alt="Supprimer" /></a>
                         </div>
                     </div>
 
+                    {# Informations sur la voiture : nombre de places, boîte, etc. #}
                     <div class="mini-car-icons">
                         <div>
                             <img src="/assets/icons/persons.png" alt="{{ voiture.nbPlaces }} places" />
@@ -50,6 +64,7 @@
                         </div>
                     </div>
 
+                    {# Affichage des prix (par jour et par mois) #}
                     <div class="mini-car-price">
                         <p class="price-per-day">
                             {{ voiture.prixJournalier ?? voiture.prix_journalier }} € / jour
@@ -62,13 +77,14 @@
             {% endfor %}
 
         {% endif %}
-
     </div>
 </section>
 
+{# Section "promesse Véhicloc" avec le texte fixe de la maquette #}
 <section id="promises">
     <div>
         <h2>La promesse Véhicloc</h2>
+
         <div class="promise">
             <img src="/assets/icons/insurance.png" alt="Assurance et Assistance">
             <div class="promise-text">

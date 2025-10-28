@@ -6,13 +6,15 @@
           content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    {# Bloc du titre de la page, modifiable dans chaque page Twig #}
     <title>{% block title %}Véhicloc{% endblock %}</title>
 
-    
+    {# Lien vers le fichier CSS commun à tout le site #}
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 
+{# En-tête du site : logo, navigation et visuel principal #}
 <header>
     <nav>
         <a href="/"><img src="/assets/img/logo.png" alt="Vehicloc" /></a>
@@ -29,10 +31,12 @@
     </div>
 </header>
 
+{# Zone principale du site : chaque page affiche ici son propre contenu #}
 <main>
     {% block body %}{% endblock %}
 </main>
 
+{# Pied de page commun à toutes les pages du site #}
 <footer>
     <h2>Conduire avec nous</h2>
     <nav>

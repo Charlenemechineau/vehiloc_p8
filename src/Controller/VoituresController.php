@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+// Permet d'accéder aux voitures dans la base
 use App\Repository\VoitureRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
