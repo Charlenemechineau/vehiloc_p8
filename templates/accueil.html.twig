@@ -37,9 +37,11 @@
                             <p>ou similaire | {{ voiture.localisation }}</p>
                         </a>
 
-                        {# Icône de suppression (fonctionnalité non encore active) #}
+                        {# Icône de suppression #}
                         <div>
-                            <a href="#"><img src="/assets/icons/trash.png" alt="Supprimer" /></a>
+                            <a href="{{ path('app_voiture_supprimer', {'id': voiture.id}) }}">
+                                <img src="/assets/icons/trash.png" alt="Supprimer" />
+                            </a>
                         </div>
                     </div>
 

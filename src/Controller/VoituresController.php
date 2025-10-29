@@ -4,12 +4,16 @@ namespace App\Controller;
 
 // Permet d'accéder aux voitures dans la base//
 use App\Repository\VoitureRepository;
+// Permet de gérer les opérations en base//
+// (ajout, modification, suppression)//
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class VoituresController extends AbstractController
 {
+    // route pour afficher la liste des voitures//
     #[Route('/', name: 'app_accueil')]
     public function accueil(VoitureRepository $voitureRepository): Response
     {
@@ -23,6 +27,7 @@ class VoituresController extends AbstractController
         ]);
     }
 
+    // route pour afficher le détail d'une voiture//
     #[Route('/voiture/{id}', name: 'app_voiture_detail')]
     public function detail(int $id, VoitureRepository $voitureRepository): Response
     {
@@ -39,5 +44,33 @@ class VoituresController extends AbstractController
             'voiture' => $voiture,
         ]);
     }
+
+    // route pour supprimer une voiture//
+#[Route('/voiture/{id}/supprimer', name: 'app_voiture_supprimer')]
+// j'injecte le VoitureRepository pour récupérer la voiture à supprimer//
+// j'injecte aussi l'EntityManagerInterface pour faire la suppression//
+// j'indique que l'id dans l'URL est de type int//
+// la méthode retourne une Response//
+public function supprimer(int $id, VoitureRepository $voitureRepository, EntityManagerInterface $em): Response
+{
+    // je récupère la voiture correspondant à l'id envoyé dans l'URL//
+    $voiture = $voitureRepository->find($id);
+
+    // Si aucune voiture ne correspond à cet id, on redirige vers la page d'accueil//
+    // Cela évite une erreur si l'utilisateur tape manuellement une mauvaise URL //
+    if (!$voiture) {
+        return $this->redirectToRoute('app_accueil');
+    }
+
+    // je demande à Doctrine de SUPPRIMER cette voiture
+    // - remove() prépare la suppression (Doctrine marque l’objet comme “à supprimer”)
+    // - flush() exécute réellement la requête SQL DELETE en base
+    $em->remove($voiture);
+    $em->flush();
+
+    //  Une fois la suppression faite, on redirige l’utilisateur vers la page d’accueil//
+    // Ainsi, il voit la liste des voitures à jour (sans celle qui vient d’être supprimée)//
+    return $this->redirectToRoute('app_accueil');
+}
 
 }
