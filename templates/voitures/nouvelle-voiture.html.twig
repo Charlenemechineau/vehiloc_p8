@@ -1,0 +1,57 @@
+{# On réutilise la structure globale du site (header, footer...) définie dans base.html.twig #}
+{% extends 'base.html.twig' %}
+
+{# On définit le titre de la page (affiché dans l’onglet du navigateur) #}
+{% block title %}Ajouter une voiture - Véhicloc{% endblock %}
+
+{# On remplit le bloc "body" (le contenu principal de la page) #}
+{% block body %}
+
+<section id="add">
+    {# Lien pour retourner à la page d’accueil #}
+    <a href="{{ path('app_accueil') }}">← Retour</a>
+    
+    {# Titre principal de la page #}
+    <h1>Ajouter une voiture</h1>
+
+    {# form_start(form) génère automatiquement la balise <form> avec la bonne action et méthode #}
+    {{ form_start(form) }}
+
+        {# Chaque form_row(form.champ) affiche le label, le champ et les erreurs éventuelles #}
+        <div class="input">
+            {{ form_row(form.nom) }}
+        </div>
+
+        <div class="input">
+            {{ form_row(form.description) }}
+        </div>
+
+        <div class="input">
+            {{ form_row(form.prix_journalier) }}
+        </div>
+
+        <div class="input">
+            {{ form_row(form.prix_mensuel) }}
+        </div>
+
+        <div class="input">
+            {{ form_row(form.nbPlaces) }}
+        </div>
+
+        <div class="input">
+            {{ form_row(form.boite_vitesse) }}
+        </div>
+
+        <div class="input">
+            {{ form_row(form.localisation) }}
+        </div>
+
+        {# Bouton pour valider et envoyer le formulaire #}
+        <button type="submit" class="btn-add">Enregistrer</button>
+
+    {# form_end(form) ferme automatiquement la balise </form> et ajoute les champs cachés nécessaires (token CSRF, etc.) #}
+    {{ form_end(form) }}
+</section>
+
+{# Fin du bloc body #}
+{% endblock %}

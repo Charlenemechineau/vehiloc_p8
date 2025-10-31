@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-// Permet d'accéder aux voitures dans la base//
+use App\Entity\Voiture;
+use App\Form\VoitureType;
 use App\Repository\VoitureRepository;
-// Permet de gérer les opérations en base//
-// (ajout, modification, suppression)//
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,6 +24,42 @@ class VoituresController extends AbstractController
         // 3. Lui passer la liste des voitures//
         return $this->render('accueil.html.twig', [
             'voitures' => $voitures,
+        ]);
+    }
+
+    // ⚠️ IMPORTANT : route SPÉCIFIQUE AVANT la route dynamique //
+    // route pour ajouter une nouvelle voiture //
+    #[Route('/voiture/ajouter', name: 'app_voiture_ajouter')]
+    public function ajouter(Request $request, EntityManagerInterface $em): Response
+    {
+        // je crée une nouvelle instance de voiture  //
+        $voiture = new Voiture();
+
+        // je crée le formulaire basé sur le VoitureType et lié à l'objet $voiture //
+        // cela permet à Symfony de remplir automatiquement les champs lors de la soumission //
+        $form = $this->createForm(VoitureType::class, $voiture);
+
+        // je demande au formulaire d'analyser la requête HTTP //
+        // -> si le formulaire est soumis, Symfony hydrate automatiquement l'objet $voiture //
+        $form->handleRequest($request);
+
+        // je vérifie si le formulaire a été soumis et que les champs sont valides //
+        if ($form->isSubmitted() && $form->isValid()) {
+            // je demande à Doctrine de préparer l'enregistrement de la nouvelle voiture //
+            $em->persist($voiture);
+
+            // j'exécute réellement la requête SQL INSERT pour sauvegarder la voiture en base //
+            $em->flush();
+
+            // une fois la voiture enregistrée, je redirige l'utilisateur vers la page de détail //
+            return $this->redirectToRoute('app_voiture_detail', [
+                'id' => $voiture->getId(),
+            ]);
+        }
+
+        // si le formulaire n'est pas encore soumis ou contient des erreurs, je l'affiche //
+        return $this->render('voitures/nouvelle-voiture.html.twig', [
+            'form' => $form->createView(), // j'envoie le formulaire à la vue Twig //
         ]);
     }
 
@@ -46,31 +82,18 @@ class VoituresController extends AbstractController
     }
 
     // route pour supprimer une voiture//
-#[Route('/voiture/{id}/supprimer', name: 'app_voiture_supprimer')]
-// j'injecte le VoitureRepository pour récupérer la voiture à supprimer//
-// j'injecte aussi l'EntityManagerInterface pour faire la suppression//
-// j'indique que l'id dans l'URL est de type int//
-// la méthode retourne une Response//
-public function supprimer(int $id, VoitureRepository $voitureRepository, EntityManagerInterface $em): Response
-{
-    // je récupère la voiture correspondant à l'id envoyé dans l'URL//
-    $voiture = $voitureRepository->find($id);
+    #[Route('/voiture/{id}/supprimer', name: 'app_voiture_supprimer')]
+    public function supprimer(int $id, VoitureRepository $voitureRepository, EntityManagerInterface $em): Response
+    {
+        $voiture = $voitureRepository->find($id);
 
-    // Si aucune voiture ne correspond à cet id, on redirige vers la page d'accueil//
-    // Cela évite une erreur si l'utilisateur tape manuellement une mauvaise URL //
-    if (!$voiture) {
+        if (!$voiture) {
+            return $this->redirectToRoute('app_accueil');
+        }
+
+        $em->remove($voiture);
+        $em->flush();
+
         return $this->redirectToRoute('app_accueil');
     }
-
-    // je demande à Doctrine de SUPPRIMER cette voiture
-    // - remove() prépare la suppression (Doctrine marque l’objet comme “à supprimer”)
-    // - flush() exécute réellement la requête SQL DELETE en base
-    $em->remove($voiture);
-    $em->flush();
-
-    //  Une fois la suppression faite, on redirige l’utilisateur vers la page d’accueil//
-    // Ainsi, il voit la liste des voitures à jour (sans celle qui vient d’être supprimée)//
-    return $this->redirectToRoute('app_accueil');
-}
-
 }
