@@ -6,9 +6,9 @@
 
 {# 
   On définit le titre de la page dans l’onglet du navigateur.
-  Ici, on affiche dynamiquement le nom de la voiture.
+  Ici, on affiche dynamiquement la marque de la voiture.
 #}
-{% block title %}{{ voiture.nom }} - Véhicloc{% endblock %}
+{% block title %}{{ voiture.marque }} - Véhicloc{% endblock %}
 
 {# 
   Le bloc "body" contient tout le contenu spécifique à cette page.
@@ -22,10 +22,10 @@
     <a href="{{ path('app_accueil') }}">← Retour</a>
 
     {# 
-      On affiche le nom de la voiture venant de la base de données.
+      On affiche la marque de la voiture venant de la base de données.
       La variable "voiture" est transmise par le contrôleur.
     #}
-    <h1>{{ voiture.nom }}</h1>
+    <h1>{{ voiture.marque }}</h1>
 
     {# Description de la voiture, elle aussi récupérée depuis la base #}
     <p class="description-car">

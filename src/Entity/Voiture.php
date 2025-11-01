@@ -25,7 +25,7 @@ class Voiture
     // le nom de la voiture (ex: "Peugeot 208")
     // longueur max 255 caractères
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private ?string $marque = null;
 
     // la description de la voiture (texte long)
     // nullable true = peut être vide
@@ -61,16 +61,16 @@ class Voiture
     }
 
     // getter pour récupérer le nom
-    public function getNom(): ?string
+    public function getMarque(): ?string
     {
-        return $this->nom;
+        return $this->marque;
     }
 
     // setter pour modifier le nom
     // return $this permet de chaîner les setters
-    public function setNom(string $nom): static
+    public function setMarque(string $marque): static
     {
-        $this->nom = $nom;
+        $this->marque = $marque;
 
         return $this;
     }

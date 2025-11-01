@@ -18,9 +18,9 @@ class VoitureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // champ pour le nom de la voiture (texte simple)
-            ->add('nom', TextType::class, [
-                'label' => 'Nom de la voiture',
+            // champ pour la marque de la voiture (texte simple)
+            ->add('marque', TextType::class, [
+                'label' => 'Marque de la voiture',
             ])
             
             // champ pour la description (texte long sur plusieurs lignes)
