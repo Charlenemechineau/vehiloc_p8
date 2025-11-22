@@ -1,14 +1,14 @@
 {# On réutilise la structure globale du site (header, footer...) définie dans base.html.twig #}
 {% extends 'base.html.twig' %}
 
-{# On définit le titre de la page (affiché dans l’onglet du navigateur) #}
+{# On définit le titre de la page (affiché dans l'onglet du navigateur) #}
 {% block title %}Ajouter une voiture - Véhicloc{% endblock %}
 
 {# On remplit le bloc "body" (le contenu principal de la page) #}
 {% block body %}
 
 <section id="add">
-    {# Lien pour retourner à la page d’accueil #}
+    {# Lien pour retourner à la page d'accueil #}
     <a href="{{ path('app_accueil') }}">← Retour</a>
     
     {# Titre principal de la page #}
@@ -16,6 +16,11 @@
 
     {# form_start(form) génère automatiquement la balise <form> avec la bonne action et méthode #}
     {{ form_start(form) }}
+
+        {# NOUVEAU : Champ pour le nom/modèle de la voiture #}
+        <div class="input">
+            {{ form_row(form.nom) }}
+        </div>
 
         {# Chaque form_row(form.champ) affiche le label, le champ et les erreurs éventuelles #}
         <div class="input">

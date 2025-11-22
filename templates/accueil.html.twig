@@ -7,7 +7,7 @@
 {# On utilise la structure du fichier base.html.twig (header + footer déjà inclus) #}
 {% extends 'base.html.twig' %}
 
-{# Titre de la page, affiché dans l’onglet du navigateur #}
+{# Titre de la page, affiché dans l'onglet du navigateur #}
 {% block title %}Accueil - Véhicloc{% endblock %}
 
 {# Contenu principal de la page #}
@@ -24,16 +24,16 @@
 
         {# Si aucune voiture n'est enregistrée dans la base, on affiche un message #}
         {% if voitures is empty %}
-            <p>Aucune voiture disponible pour le moment. Ajoutez-en via phpMyAdmin.</p>
+            <p>Aucune voiture disponible pour le moment. Ajoutez-en via le formulaire.</p>
         {% else %}
 
             {# Sinon, on parcourt la liste des voitures récupérées par le contrôleur #}
             {% for voiture in voitures %}
                 <article>
                     <div class="mini-car-title">
-                        {# Lien vers la page de détail du véhicule #}
+                        {# Lien vers la page de détail du véhicule - AFFICHAGE DU NOM + MARQUE #}
                         <a href="{{ path('app_voiture_detail', {'id': voiture.id}) }}">
-                            <h3>{{ voiture.marque }}</h3>
+                            <h3>{{ voiture.marque }} {{ voiture.nom }}</h3>
                             <p>ou similaire | {{ voiture.localisation }}</p>
                         </a>
 

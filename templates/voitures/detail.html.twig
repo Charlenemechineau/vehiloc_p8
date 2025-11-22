@@ -5,27 +5,27 @@
 {% extends 'base.html.twig' %}
 
 {# 
-  On définit le titre de la page dans l’onglet du navigateur.
-  Ici, on affiche dynamiquement la marque de la voiture.
+  On définit le titre de la page dans l'onglet du navigateur.
+  Ici, on affiche dynamiquement la marque ET le nom de la voiture.
 #}
-{% block title %}{{ voiture.marque }} - Véhicloc{% endblock %}
+{% block title %}{{ voiture.marque }} {{ voiture.nom }} - Véhicloc{% endblock %}
 
 {# 
   Le bloc "body" contient tout le contenu spécifique à cette page.
-  Tout ce qui est à l’intérieur s’affichera à la place du bloc body de base.html.twig.
+  Tout ce qui est à l'intérieur s'affichera à la place du bloc body de base.html.twig.
 #}
 {% block body %}
 
 <section id="car">
 
-    {# Lien de retour vers la page d’accueil #}
+    {# Lien de retour vers la page d'accueil #}
     <a href="{{ path('app_accueil') }}">← Retour</a>
 
     {# 
-      On affiche la marque de la voiture venant de la base de données.
-      La variable "voiture" est transmise par le contrôleur.
+      On affiche la marque ET le nom de la voiture venant de la base de données.
+      Exemple : "Peugeot 208" au lieu de juste "Peugeot"
     #}
-    <h1>{{ voiture.marque }}</h1>
+    <h1>{{ voiture.marque }} {{ voiture.nom }}</h1>
 
     {# Description de la voiture, elle aussi récupérée depuis la base #}
     <p class="description-car">
@@ -49,12 +49,7 @@
         Les conducteurs doivent avoir leur permis de conduire depuis au moins 5 ans.
     </p>
 
-    {# 
-      Affichage du prix mensuel récupéré depuis la base.
-      On utilise "??" pour être sûr que Twig comprenne les deux styles de noms possibles :
-      - voiture.prixMensuel (camelCase)
-      - voiture.prix_mensuel (snake_case)
-    #}
+    {# Affichage du prix mensuel récupéré depuis la base #}
     <div class="total-rent">
         <span>Total</span>
         <span>{{ voiture.prixMensuel ?? voiture.prix_mensuel }} €/mois</span>

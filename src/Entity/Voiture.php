@@ -15,14 +15,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: VoitureRepository::class)]
 class Voiture
 {
-    // l'id de la voiture (clé primaire)
+    // l'id de la voiture 
     // il est généré automatiquement par la base de données
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    // le nom de la voiture (ex: "Peugeot 208")
+
+    // le nom de la voiture //
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
+
+    // la marque de la voiture 
     // longueur max 255 caractères
     #[ORM\Column(length: 255)]
     private ?string $marque = null;
@@ -58,6 +64,18 @@ class Voiture
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    // setter pour modifier le nom
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+        return $this;
     }
 
     // getter pour récupérer le nom
